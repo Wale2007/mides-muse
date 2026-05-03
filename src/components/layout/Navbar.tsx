@@ -24,38 +24,6 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="announcement-bar">
-          <div className="marquee">
-            <div className="marquee-content">
-              <span>🔥 FAST DELIVERY TO OAU HOSTELS</span>
-              <span className="marquee-dot">•</span>
-              <span>✨ MIDE'S MUSE</span>
-              <span className="marquee-dot">•</span>
-              <span>ELEGANCE REDEFINED</span>
-              <span className="marquee-dot">•</span>
-              <span>🔥 FAST DELIVERY TO OAU HOSTELS</span>
-              <span className="marquee-dot">•</span>
-              <span>✨ MIDE'S MUSE</span>
-              <span className="marquee-dot">•</span>
-              <span>ELEGANCE REDEFINED</span>
-              <span className="marquee-dot">•</span>
-            </div>
-            <div className="marquee-content" aria-hidden="true">
-              <span>🔥 FAST DELIVERY TO OAU HOSTELS</span>
-              <span className="marquee-dot">•</span>
-              <span>✨ MIDE'S MUSE</span>
-              <span className="marquee-dot">•</span>
-              <span>ELEGANCE REDEFINED</span>
-              <span className="marquee-dot">•</span>
-              <span>🔥 FAST DELIVERY TO OAU HOSTELS</span>
-              <span className="marquee-dot">•</span>
-              <span>✨ MIDE'S MUSE</span>
-              <span className="marquee-dot">•</span>
-              <span>ELEGANCE REDEFINED</span>
-              <span className="marquee-dot">•</span>
-            </div>
-          </div>
-        </div>
         <div className="navbar-container">
           <Link to="/" className="navbar-logo">
             <span className="logo-mides">Mide's</span>
