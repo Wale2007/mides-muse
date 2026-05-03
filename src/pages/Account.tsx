@@ -12,6 +12,14 @@ const Account = () => {
   const [profile, setProfile] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editForm, setEditForm] = useState({
+    first_name: '',
+    last_name: '',
+    phone: '',
+    shipping_address: ''
+  });
 
   useEffect(() => {
     if (!user) {
@@ -26,7 +34,15 @@ const Account = () => {
         .eq('id', user.id)
         .single();
       
-      if (!profileError && profileData) setProfile(profileData);
+      if (!profileError && profileData) {
+        setProfile(profileData);
+        setEditForm({
+          first_name: profileData.first_name || '',
+          last_name: profileData.last_name || '',
+          phone: profileData.phone || '',
+          shipping_address: profileData.shipping_address || ''
+        });
+      }
 
       const { data: ordersData, error: ordersError } = await supabase
         .from('orders')
@@ -41,6 +57,49 @@ const Account = () => {
 
     fetchProfile();
   }, [user, navigate]);
+
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    setSaving(true);
+    
+    // Check if profile exists first
+    const { data: existing } = await supabase.from('profiles').select('id').eq('id', user.id).single();
+    
+    let error;
+    if (existing) {
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: editForm.first_name,
+          last_name: editForm.last_name,
+          phone: editForm.phone,
+          shipping_address: editForm.shipping_address
+        })
+        .eq('id', user.id);
+      error = updateError;
+    } else {
+      const { error: insertError } = await supabase
+        .from('profiles')
+        .insert({
+          id: user.id,
+          first_name: editForm.first_name,
+          last_name: editForm.last_name,
+          phone: editForm.phone,
+          shipping_address: editForm.shipping_address
+        });
+      error = insertError;
+    }
+
+    if (error) {
+      toast.error('Failed to update profile');
+      console.error(error);
+    } else {
+      toast.success('Profile updated successfully');
+      setProfile({ ...profile, ...editForm });
+      setIsEditing(false);
+    }
+    setSaving(false);
+  };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -80,29 +139,88 @@ const Account = () => {
         <main className="account-main">
           <section className="account-section">
             <h2>Profile Details</h2>
-            <div className="profile-info">
-              <div className="info-group">
-                <label>First Name</label>
-                <p>{profile?.first_name || '-'}</p>
+            {isEditing ? (
+              <div className="profile-edit-form">
+                <div className="form-group" style={{ marginBottom: 16 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--muted)', marginBottom: 8 }}>First Name</label>
+                  <input 
+                    type="text" 
+                    value={editForm.first_name} 
+                    onChange={e => setEditForm({...editForm, first_name: e.target.value})}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit' }}
+                  />
+                </div>
+                <div className="form-group" style={{ marginBottom: 16 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--muted)', marginBottom: 8 }}>Last Name</label>
+                  <input 
+                    type="text" 
+                    value={editForm.last_name} 
+                    onChange={e => setEditForm({...editForm, last_name: e.target.value})}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit' }}
+                  />
+                </div>
+                <div className="form-group" style={{ marginBottom: 16 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--muted)', marginBottom: 8 }}>Phone Number</label>
+                  <input 
+                    type="tel" 
+                    value={editForm.phone} 
+                    onChange={e => setEditForm({...editForm, phone: e.target.value})}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit' }}
+                  />
+                </div>
+                <div className="form-group full-width" style={{ marginBottom: 24, gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--muted)', marginBottom: 8 }}>Default Delivery Address (Hostel/Off-Campus)</label>
+                  <textarea 
+                    value={editForm.shipping_address} 
+                    onChange={e => setEditForm({...editForm, shipping_address: e.target.value})}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit', minHeight: 80, resize: 'vertical' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', gap: 12, gridColumn: '1 / -1' }}>
+                  <button className="btn-primary" onClick={handleSaveProfile} disabled={saving}>
+                    {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                  <button className="btn-outline" onClick={() => {
+                    setIsEditing(false);
+                    // Reset form to current profile
+                    setEditForm({
+                      first_name: profile?.first_name || '',
+                      last_name: profile?.last_name || '',
+                      phone: profile?.phone || '',
+                      shipping_address: profile?.shipping_address || ''
+                    });
+                  }} disabled={saving}>
+                    Cancel
+                  </button>
+                </div>
               </div>
-              <div className="info-group">
-                <label>Last Name</label>
-                <p>{profile?.last_name || '-'}</p>
-              </div>
-              <div className="info-group">
-                <label>Email</label>
-                <p>{user?.email}</p>
-              </div>
-              <div className="info-group">
-                <label>Phone Number</label>
-                <p>{profile?.phone || 'Not provided'}</p>
-              </div>
-              <div className="info-group full-width">
-                <label>Shipping Address</label>
-                <p>{profile?.shipping_address || 'No default address set'}</p>
-              </div>
-            </div>
-            <button className="btn-outline mt-4">Edit Profile</button>
+            ) : (
+              <>
+                <div className="profile-info">
+                  <div className="info-group">
+                    <label>First Name</label>
+                    <p>{profile?.first_name || '-'}</p>
+                  </div>
+                  <div className="info-group">
+                    <label>Last Name</label>
+                    <p>{profile?.last_name || '-'}</p>
+                  </div>
+                  <div className="info-group">
+                    <label>Email</label>
+                    <p>{user?.email}</p>
+                  </div>
+                  <div className="info-group">
+                    <label>Phone Number</label>
+                    <p>{profile?.phone || 'Not provided'}</p>
+                  </div>
+                  <div className="info-group full-width">
+                    <label>Shipping Address</label>
+                    <p>{profile?.shipping_address || 'No default address set'}</p>
+                  </div>
+                </div>
+                <button className="btn-outline mt-4" onClick={() => setIsEditing(true)}>Edit Profile</button>
+              </>
+            )}
           </section>
 
           <section className="account-section mt-8">

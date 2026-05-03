@@ -12,7 +12,7 @@ const categoryIcons: Record<string, string> = {
   Necklaces: '/icons/necklaces.png',
   Earrings: '/icons/earrings.png',
   Bracelets: '/icons/bracelets.png',
-  'Hair Accessories': '/icons/hair_accessories.png',
+  'Hair Accessories': '/icons/hair-accessories.png',
   Rings: '/icons/rings.png',
 };
 
