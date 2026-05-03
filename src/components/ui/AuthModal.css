@@ -1,0 +1,134 @@
+.auth-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 45, 45, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 480px;
+  padding: 40px;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.auth-close:hover {
+  color: var(--rose-gold);
+  transform: rotate(90deg);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-header h2 {
+  font-size: 2rem;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-row {
+  display: flex;
+  gap: 16px;
+}
+
+.auth-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.auth-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--muted);
+}
+
+.auth-input-group input {
+  width: 100%;
+  padding: 14px 16px 14px 44px;
+  border: 1px solid rgba(183, 110, 121, 0.2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.auth-input-group input:focus {
+  border-color: var(--rose-gold);
+  box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
+}
+
+.auth-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 16px;
+  font-size: 1.05rem;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.auth-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--rose-gold);
+  font-weight: 600;
+  margin-left: 6px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+.auth-toggle-btn:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-modal {
+    padding: 30px 20px;
+  }
+  
+  .auth-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
