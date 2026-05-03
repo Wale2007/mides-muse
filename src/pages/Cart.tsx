@@ -69,16 +69,16 @@ const Cart = () => {
         if (itemsError) throw itemsError;
 
         clearCart();
-        window.open(whatsappLink, '_blank');
+        window.location.href = whatsappLink;
       } catch (err: any) {
         console.error('Checkout error:', err);
         toast.error('Failed to process order. Opening WhatsApp anyway...');
-        window.open(whatsappLink, '_blank');
+        window.location.href = whatsappLink;
       }
     } else {
       // Guest checkout (doesn't save to DB for now, just goes to WhatsApp)
-      window.open(whatsappLink, '_blank');
       clearCart();
+      window.location.href = whatsappLink;
     }
   };
 
