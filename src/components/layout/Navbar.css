@@ -8,7 +8,47 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(183, 110, 121, 0.1);
+  border-bottom: 1px solid rgba(183, 110, 121, 0.1);
 }
+
+.announcement-bar {
+  background: var(--dark);
+  color: white;
+  padding: 6px 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+
+.marquee {
+  display: flex;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  animation: scrollText 20s linear infinite;
+  min-width: 100%;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.marquee-content span {
+  padding: 0 15px;
+}
+
+.marquee-dot {
+  color: var(--rose-gold);
+}
+
+@keyframes scrollText {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
 
 .navbar-container {
   max-width: 1200px;

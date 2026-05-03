@@ -7,8 +7,9 @@
 }
 
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(183, 110, 121, 0.15);
+  z-index: 2;
 }
 
 .product-card-image-wrap {
