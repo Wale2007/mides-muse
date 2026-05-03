@@ -25,7 +25,7 @@ const Footer = () => {
           <Link to="/shop?category=Earrings">Earrings</Link>
         </div>
 
-        <div className="footer-section">
+        <div className="footer-links-section">
           <h4>Shop</h4>
           <Link to="/shop?category=Necklaces">Necklaces/Chain</Link>
           <Link to="/shop?category=Earrings">Earrings</Link>
